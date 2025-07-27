@@ -1,7 +1,6 @@
-create table `optima-project-manager`.brand
+create table if not exists brand
 (
-    id          bigint auto_increment
-        primary key,
+    id          bigint primary key,
     name        varchar(100) null,
     description varchar(250) null,
     country     varchar(100) null,
@@ -13,10 +12,9 @@ create table `optima-project-manager`.brand
 )
     comment 'Bảng lưu các thương hiệu sản phẩm';
 
-create table `optima-project-manager`.category
+create table if not exists category
 (
-    id           bigint auto_increment
-        primary key,
+    id           bigint primary key,
     name         varchar(100) null,
     seo_title    varchar(250) null,
     description  varchar(250) null,
@@ -31,10 +29,9 @@ create table `optima-project-manager`.category
 )
     comment 'Bảng lưu thông tin các danh mục sản phẩm, hỗ trợ phân cấp danh mục';
 
-create table `optima-project-manager`.manufacturing_location
+create table if not exists manufacturing_location
 (
-    id          bigint auto_increment
-        primary key,
+    id          bigint primary key,
     name        varchar(150) null,
     email       varchar(150) null,
     phone       varchar(15)  null,
@@ -48,10 +45,9 @@ create table `optima-project-manager`.manufacturing_location
 )
     comment 'Bảng lưu thông tin các nhà cung cấp sản phẩm';
 
-create table `optima-project-manager`.product
+create table if not exists product
 (
-    id                        bigint auto_increment
-        primary key,
+    id                        bigint primary key,
     qr_code                   varchar(250)   null comment 'mã vạch',
     name                      varchar(100)   null,
     seo_title                 varchar(250)   null comment 'tiêu đề',
@@ -78,18 +74,17 @@ create table `optima-project-manager`.product
     update_at                 datetime       null,
     sellable                  tinyint(1)     null comment 'có được bán trực tiếp hay không',
     constraint product_ibfk_1
-        foreign key (category_id) references `optima-project-manager`.category (id),
+        foreign key (category_id) references category (id),
     constraint product_ibfk_2
-        foreign key (brand_id) references `optima-project-manager`.brand (id),
+        foreign key (brand_id) references brand (id),
     constraint product_ibfk_3
-        foreign key (manufacturing_location_id) references `optima-project-manager`.manufacturing_location (id)
+        foreign key (manufacturing_location_id) references manufacturing_location (id)
 )
     comment 'Bảng lưu thông tin chi tiết các sản phẩm';
 
-create table `optima-project-manager`.product_batch
+create table if not exists product_batch
 (
-    id          bigint       not null
-        primary key,
+    id          bigint primary key,
     expiry_date datetime     null comment 'ngày hết hạn',
     import_date datetime     null comment 'ngày nhập hàng',
     product_id  bigint       null,
@@ -99,14 +94,13 @@ create table `optima-project-manager`.product_batch
     update_by   bigint       null,
     update_at   datetime     null,
     constraint fk_product_batch
-        foreign key (product_id) references `optima-project-manager`.product (id)
+        foreign key (product_id) references product (id)
 )
     comment 'Bảng để kiểm soát các lô nhập hàng';
 
-create table `optima-project-manager`.store
+create table if not exists store
 (
-    id          bigint       not null comment 'Khóa chính, định danh cửa hàng'
-        primary key,
+    id          bigint primary key comment 'Khóa chính, định danh cửa hàng' ,
     name        varchar(150) null comment 'Tên cửa hàng',
     email       varchar(150) null,
     address     varchar(250) null,
@@ -119,10 +113,9 @@ create table `optima-project-manager`.store
 )
     comment 'Bảng lưu thông tin các cửa hàng';
 
-create table `optima-project-manager`.store_product
+create table if not exists store_product
 (
-    id         bigint   not null
-        primary key,
+    id         bigint primary key,
     store_id   bigint   null,
     product_id bigint   null,
     quantity   int      null,
@@ -131,15 +124,14 @@ create table `optima-project-manager`.store_product
     update_by  bigint   null,
     update_at  datetime null,
     constraint fk_store
-        foreign key (store_id) references `optima-project-manager`.store (id),
+        foreign key (store_id) references store (id),
     constraint fk_store_product
-        foreign key (product_id) references `optima-project-manager`.product (id)
+        foreign key (product_id) references product (id)
 );
 
-create table `optima-project-manager`.supplier
+create table if not exists supplier
 (
-    id          bigint auto_increment comment 'Khóa chính, nhà cung cấp'
-        primary key,
+    id          bigint primary key,
     name        varchar(150) null,
     email       varchar(150) null,
     address     varchar(150) null,
@@ -152,10 +144,9 @@ create table `optima-project-manager`.supplier
 )
     comment 'Bảng lưu thông tin nhà cung cấp';
 
-create table `optima-project-manager`.warehouse
+create table if not exists warehouse
 (
-    id          bigint                         not null comment 'Khóa chính, định danh kho'
-        primary key,
+    id          bigint primary key,
     name        varchar(150)                   not null comment 'Tên kho',
     email       varchar(150)                   not null comment 'Email liên hệ (nếu có)',
     address     varchar(250)                   not null comment 'Địa chỉ kho',
@@ -169,10 +160,9 @@ create table `optima-project-manager`.warehouse
 )
     comment 'Bảng quản lý thông tin các kho hàng trong hệ thống';
 
-create table `optima-project-manager`.export_log
+create table if not exists export_log
 (
-    id                bigint       not null
-        primary key,
+    id                bigint       primary key,
     description       varchar(250) null,
     from_warehouse_id bigint       null,
     to_store_id       bigint       null,
@@ -184,32 +174,30 @@ create table `optima-project-manager`.export_log
     update_by         bigint       null,
     update_at         datetime     null,
     constraint fk_export_from_warehouse
-        foreign key (from_warehouse_id) references `optima-project-manager`.warehouse (id),
+        foreign key (from_warehouse_id) references warehouse (id),
     constraint fk_export_to_store
-        foreign key (to_store_id) references `optima-project-manager`.store (id)
+        foreign key (to_store_id) references store (id)
 );
 
-create table `optima-project-manager`.export_product
+create table if not exists export_product
 (
-    id         bigint not null comment 'ID dòng sản phẩm xuất'
-        primary key,
+    id         bigint primary key,
     log_id     bigint null comment 'ID phiếu xuất (liên kết với export_log)',
     product_id bigint null comment 'ID sản phẩm được xuất',
     quantity   int    null comment 'Số lượng sản phẩm xuất',
     batch_id   bigint null comment 'ID lô hàng tương ứng',
     constraint fk_export_batch
-        foreign key (batch_id) references `optima-project-manager`.product_batch (id),
+        foreign key (batch_id) references product_batch (id),
     constraint fk_export_log
-        foreign key (log_id) references `optima-project-manager`.export_log (id),
+        foreign key (log_id) references export_log (id),
     constraint fk_export_product
-        foreign key (product_id) references `optima-project-manager`.product (id)
+        foreign key (product_id) references product (id)
 )
     comment 'Chi tiết sản phẩm trong phiếu xuất hàng';
 
-create table `optima-project-manager`.import_log
+create table if not exists import_log
 (
-    id               bigint auto_increment comment 'Khóa chính, định danh phiếu nhập, fk import_product'
-        primary key,
+    id               bigint         primary key,
     description      varchar(250)   null comment 'mô tả, ghi chú',
     from_supplier_id bigint         null comment 'ID nhà cung cấp (FK supplier)',
     to_warehouse_id  bigint         null comment 'ID kho nhập (FK warehouse)',
@@ -222,16 +210,15 @@ create table `optima-project-manager`.import_log
     update_by        bigint         null comment 'ID người cập nhật',
     update_at        datetime       null comment 'Thời gian cập nhật',
     constraint import_log_supplier_id_fk
-        foreign key (from_supplier_id) references `optima-project-manager`.supplier (id),
+        foreign key (from_supplier_id) references supplier (id),
     constraint import_log_warehouse_id_fk
-        foreign key (to_warehouse_id) references `optima-project-manager`.warehouse (id)
+        foreign key (to_warehouse_id) references warehouse (id)
 )
     comment 'Bảng ghi nhận các phiếu nhập hàng từ nhà cung cấp về kho';
 
-create table `optima-project-manager`.history_pay
+create table if not exists history_pay
 (
-    id        bigint               not null comment 'Khóa chính, định danh từng lần thanh toán'
-        primary key,
+    id        bigint               primary key,
     log_id    bigint               not null comment 'Khóa ngoại tới import_log.id',
     time_pay  datetime             null comment 'Thời gian thanh toán',
     method    varchar(250)         null comment 'Phương thức thanh toán: tiền mặt, chuyển khoản, v.v.',
@@ -242,14 +229,13 @@ create table `optima-project-manager`.history_pay
     update_by bigint               null comment 'Người cập nhật',
     update_at datetime             null,
     constraint history_pay_import_log_id_fk
-        foreign key (log_id) references `optima-project-manager`.import_log (id)
+        foreign key (log_id) references import_log (id)
 )
     comment 'Lịch sử các lần thanh toán cho phiếu nhập hàng';
 
-create table `optima-project-manager`.import_product
+create table if not exists import_product
 (
-    id         bigint         not null
-        primary key,
+    id         bigint         primary key,
     log_id     bigint         not null comment 'Mã phiếu nhập',
     product_id bigint         not null comment 'ID sản phẩm',
     quantity   int            null comment 'Số lượng nhập',
@@ -257,18 +243,17 @@ create table `optima-project-manager`.import_product
     note       varchar(250)   null comment 'Ghi chú',
     batch_id   bigint         null,
     constraint fk_import_batch
-        foreign key (batch_id) references `optima-project-manager`.product_batch (id),
+        foreign key (batch_id) references product_batch (id),
     constraint import_product_import_log_id_fk
-        foreign key (log_id) references `optima-project-manager`.import_log (id),
+        foreign key (log_id) references import_log (id),
     constraint import_product_product_id_fk
-        foreign key (product_id) references `optima-project-manager`.product (id)
+        foreign key (product_id) references product (id)
 )
     comment 'Chi tiết sản phẩm trong từng phiếu nhập kho';
 
-create table `optima-project-manager`.inventory
+create table if not exists inventory
 (
-    id                            bigint              not null
-        primary key,
+    id                            bigint              primary key,
     warehouse_id                  bigint              not null,
     product_id                    bigint              not null,
     quantity_available            int default 0       null comment 'so luong hien co trong kho',
@@ -281,16 +266,15 @@ create table `optima-project-manager`.inventory
     update_by                     bigint              null,
     suggest_day_minimum_warehouse datetime            null,
     constraint inventory_product_id_fk
-        foreign key (product_id) references `optima-project-manager`.product (id),
+        foreign key (product_id) references product (id),
     constraint inventory_warehouse_id_fk
-        foreign key (warehouse_id) references `optima-project-manager`.warehouse (id)
+        foreign key (warehouse_id) references warehouse (id)
 )
     comment 'bang quan ly ton kho cua cac san pham';
 
-create table `optima-project-manager`.return_log
+create table if not exists return_log
 (
-    id                bigint                        not null comment 'Mã phiếu trả hàng'
-        primary key,
+    id                bigint                        primary key,
     from_warehouse_id bigint                        not null comment 'Kho gửi hàng trả (FK tới warehouse)',
     to_supplier_id    bigint                        not null comment 'Nhà cung cấp nhận hàng trả (FK tới supplier)',
     reason            varchar(250)                  null comment 'Lý do trả hàng',
@@ -302,28 +286,26 @@ create table `optima-project-manager`.return_log
     update_by         bigint                        null,
     update_at         datetime                      null,
     constraint return_log_supplier_id_fk
-        foreign key (to_supplier_id) references `optima-project-manager`.supplier (id),
+        foreign key (to_supplier_id) references supplier (id),
     constraint return_log_warehouse_id_fk
-        foreign key (from_warehouse_id) references `optima-project-manager`.warehouse (id)
+        foreign key (from_warehouse_id) references warehouse (id)
 )
     comment 'Phiếu trả hàng cho nhà cung cấp';
 
-create table `optima-project-manager`.return_product
+create table if not exists return_product
 (
-    id            bigint         not null comment 'id'
-        primary key,
+    id            bigint         primary key,
     return_log_id bigint         not null comment 'fk toi return_log',
     product_id    bigint         not null comment 'fk toi product id',
     quantity      int            not null comment 'so luong tra',
     unit_price    decimal(18, 3) not null comment 'don gia khi tra',
     batch_id      bigint         null,
     constraint fk_return_batch
-        foreign key (batch_id) references `optima-project-manager`.product_batch (id),
+        foreign key (batch_id) references product_batch (id),
     constraint return_product_product_id_fk
-        foreign key (product_id) references `optima-project-manager`.product (id),
+        foreign key (product_id) references product (id),
     constraint return_product_return_log_id_fk
-        foreign key (return_log_id) references `optima-project-manager`.return_log (id)
+        foreign key (return_log_id) references return_log (id)
 )
     comment 'Chi tien san pham duoc tra theo phieu tra hang';
-
 
