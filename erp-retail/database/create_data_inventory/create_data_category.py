@@ -54,7 +54,7 @@ for category in categories:
     meta_keyword = ", ".join(meta_keyword) # join 3 từ này lại
     create_by = random.choice(user_id)
     update_by = random.choice(user_id)
-    create_at = fake.date_time_between(start_date="-2y", end_date='now').strftime('%Y-%m-%d %H:%M:%S')
+    create_at = fake.date_time_between(start_date="-2y", end_date="now").strftime("%Y-%m-%d %H:%M:%S")
     update_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     small_image = None
     
