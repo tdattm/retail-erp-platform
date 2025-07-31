@@ -8,9 +8,12 @@ import com.optima.inventory.mapper.ProductMapper;
 import com.optima.inventory.reponsitory.ProductRepository;
 import com.optima.inventory.utils.SnowflakeIdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -50,4 +53,9 @@ public class ProductService {
     public void deleteProduct(long productId) {
         productRepository.deleteById(productId);
     }
+
+    public Page<ProductEntity> getAllProducts(Pageable pageable) {
+        return productRepository.findAll(pageable);
+    }
+    
 }

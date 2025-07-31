@@ -1,9 +1,6 @@
 package com.optima.inventory.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -49,12 +46,6 @@ public class ProductEntity {
     @Column(name = "view_count")
     private int viewCount;
 
-    @Column(name = "brand_id")
-    private long brandId;
-
-    @Column(name = "category_id")
-    private long categoryId;
-
     @Column(name = "manufacturing_location_id")
     private long manufacturingLocationId;
 
@@ -74,4 +65,11 @@ public class ProductEntity {
     private LocalDateTime updateAt;
 
     private Boolean sellable;
+
+    @JoinColumn(name = "brand_id")
+    private long brand_id;
+
+    @Column(name = "category_id")
+    private long categoryId;
+
 }
