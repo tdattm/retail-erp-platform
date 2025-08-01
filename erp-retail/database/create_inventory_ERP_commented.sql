@@ -1,6 +1,7 @@
-create table if not exists brand
+create table brand
 (
-    id          bigint primary key,
+    id          bigint       not null
+        primary key,
     name        varchar(100) null,
     description varchar(250) null,
     country     varchar(100) null,
@@ -12,9 +13,10 @@ create table if not exists brand
 )
     comment 'Bảng lưu các thương hiệu sản phẩm';
 
-create table if not exists category
+create table category
 (
-    id           bigint primary key,
+    id           bigint       not null
+        primary key,
     name         varchar(100) null,
     seo_title    varchar(250) null,
     description  varchar(250) null,
@@ -29,9 +31,10 @@ create table if not exists category
 )
     comment 'Bảng lưu thông tin các danh mục sản phẩm, hỗ trợ phân cấp danh mục';
 
-create table if not exists manufacturing_location
+create table manufacturing_location
 (
-    id          bigint primary key,
+    id          bigint       not null
+        primary key,
     name        varchar(150) null,
     email       varchar(150) null,
     phone       varchar(15)  null,
@@ -45,9 +48,10 @@ create table if not exists manufacturing_location
 )
     comment 'Bảng lưu thông tin các nhà cung cấp sản phẩm';
 
-create table if not exists product
+create table product
 (
-    id                        bigint primary key,
+    id                        bigint         not null
+        primary key,
     qr_code                   varchar(250)   null comment 'mã vạch',
     name                      varchar(100)   null,
     seo_title                 varchar(250)   null comment 'tiêu đề',
@@ -82,25 +86,24 @@ create table if not exists product
 )
     comment 'Bảng lưu thông tin chi tiết các sản phẩm';
 
-create table if not exists product_batch
+create table product_batch
 (
-    id          bigint primary key,
-    expiry_date datetime     null comment 'ngày hết hạn',
-    import_date datetime     null comment 'ngày nhập hàng',
-    product_id  bigint       null,
+    id          bigint       not null
+        primary key,
     description varchar(250) null,
     create_by   bigint       null,
     create_at   datetime     null,
     update_by   bigint       null,
     update_at   datetime     null,
-    constraint fk_product_batch
-        foreign key (product_id) references product (id)
+    import_date datetime     not null,
+    expiry_date datetime     null
 )
     comment 'Bảng để kiểm soát các lô nhập hàng';
 
-create table if not exists store
+create table store
 (
-    id          bigint primary key comment 'Khóa chính, định danh cửa hàng' ,
+    id          bigint       not null comment 'Khóa chính, định danh cửa hàng'
+        primary key,
     name        varchar(150) null comment 'Tên cửa hàng',
     email       varchar(150) null,
     address     varchar(250) null,
@@ -113,25 +116,31 @@ create table if not exists store
 )
     comment 'Bảng lưu thông tin các cửa hàng';
 
-create table if not exists store_product
+create table store_product
 (
-    id         bigint primary key,
-    store_id   bigint   null,
-    product_id bigint   null,
-    quantity   int      null,
-    create_by  bigint   null,
-    create_at  datetime null,
-    update_by  bigint   null,
-    update_at  datetime null,
+    id         bigint     not null
+        primary key,
+    store_id   bigint     null,
+    product_id bigint     null,
+    quantity   int        null,
+    create_by  bigint     null,
+    create_at  datetime   null,
+    update_by  bigint     null,
+    update_at  datetime   null,
+    batch_id   bigint     not null,
+    status     tinyint(1) null,
+    constraint fk_batch_product
+        foreign key (batch_id) references product_batch (id),
     constraint fk_store
         foreign key (store_id) references store (id),
     constraint fk_store_product
         foreign key (product_id) references product (id)
 );
 
-create table if not exists supplier
+create table supplier
 (
-    id          bigint primary key,
+    id          bigint       not null
+        primary key,
     name        varchar(150) null,
     email       varchar(150) null,
     address     varchar(150) null,
@@ -144,9 +153,10 @@ create table if not exists supplier
 )
     comment 'Bảng lưu thông tin nhà cung cấp';
 
-create table if not exists warehouse
+create table warehouse
 (
-    id          bigint primary key,
+    id          bigint                         not null
+        primary key,
     name        varchar(150)                   not null comment 'Tên kho',
     email       varchar(150)                   not null comment 'Email liên hệ (nếu có)',
     address     varchar(250)                   not null comment 'Địa chỉ kho',
@@ -160,9 +170,10 @@ create table if not exists warehouse
 )
     comment 'Bảng quản lý thông tin các kho hàng trong hệ thống';
 
-create table if not exists export_log
+create table export_log
 (
-    id                bigint       primary key,
+    id                bigint       not null
+        primary key,
     description       varchar(250) null,
     from_warehouse_id bigint       null,
     to_store_id       bigint       null,
@@ -179,9 +190,10 @@ create table if not exists export_log
         foreign key (to_store_id) references store (id)
 );
 
-create table if not exists export_product
+create table export_product
 (
-    id         bigint primary key,
+    id         bigint not null
+        primary key,
     log_id     bigint null comment 'ID phiếu xuất (liên kết với export_log)',
     product_id bigint null comment 'ID sản phẩm được xuất',
     quantity   int    null comment 'Số lượng sản phẩm xuất',
@@ -195,9 +207,10 @@ create table if not exists export_product
 )
     comment 'Chi tiết sản phẩm trong phiếu xuất hàng';
 
-create table if not exists import_log
+create table import_log
 (
-    id               bigint         primary key,
+    id               bigint         not null
+        primary key,
     description      varchar(250)   null comment 'mô tả, ghi chú',
     from_supplier_id bigint         null comment 'ID nhà cung cấp (FK supplier)',
     to_warehouse_id  bigint         null comment 'ID kho nhập (FK warehouse)',
@@ -216,9 +229,10 @@ create table if not exists import_log
 )
     comment 'Bảng ghi nhận các phiếu nhập hàng từ nhà cung cấp về kho';
 
-create table if not exists history_pay
+create table history_pay
 (
-    id        bigint               primary key,
+    id        bigint               not null
+        primary key,
     log_id    bigint               not null comment 'Khóa ngoại tới import_log.id',
     time_pay  datetime             null comment 'Thời gian thanh toán',
     method    varchar(250)         null comment 'Phương thức thanh toán: tiền mặt, chuyển khoản, v.v.',
@@ -233,9 +247,10 @@ create table if not exists history_pay
 )
     comment 'Lịch sử các lần thanh toán cho phiếu nhập hàng';
 
-create table if not exists import_product
+create table import_product
 (
-    id         bigint         primary key,
+    id         bigint         not null
+        primary key,
     log_id     bigint         not null comment 'Mã phiếu nhập',
     product_id bigint         not null comment 'ID sản phẩm',
     quantity   int            null comment 'Số lượng nhập',
@@ -251,9 +266,10 @@ create table if not exists import_product
 )
     comment 'Chi tiết sản phẩm trong từng phiếu nhập kho';
 
-create table if not exists inventory
+create table inventory
 (
-    id                            bigint              primary key,
+    id                            bigint              not null
+        primary key,
     warehouse_id                  bigint              not null,
     product_id                    bigint              not null,
     quantity_available            int default 0       null comment 'so luong hien co trong kho',
@@ -265,6 +281,9 @@ create table if not exists inventory
     update_at                     datetime            null,
     update_by                     bigint              null,
     suggest_day_minimum_warehouse datetime            null,
+    batch_id                      bigint              not null,
+    constraint fk_batch_inventory
+        foreign key (batch_id) references product_batch (id),
     constraint inventory_product_id_fk
         foreign key (product_id) references product (id),
     constraint inventory_warehouse_id_fk
@@ -272,14 +291,15 @@ create table if not exists inventory
 )
     comment 'bang quan ly ton kho cua cac san pham';
 
-create table if not exists return_log
+create table return_log
 (
-    id                bigint                        primary key,
+    id                bigint                        not null
+        primary key,
     from_warehouse_id bigint                        not null comment 'Kho gửi hàng trả (FK tới warehouse)',
     to_supplier_id    bigint                        not null comment 'Nhà cung cấp nhận hàng trả (FK tới supplier)',
     reason            varchar(250)                  null comment 'Lý do trả hàng',
     return_date       datetime                      not null comment 'Ngày thực hiện trả hàng',
-    total_refund      decimal(12, 3)                not null comment 'Tổng tiền hoàn trả',
+    total_refund      decimal(18, 2)                null,
     status            varchar(50) default 'PENDING' null comment 'Trạng thái: PENDING, COMPLETED, CANCELLED',
     create_by         bigint                        null,
     create_at         datetime                      null,
@@ -292,9 +312,10 @@ create table if not exists return_log
 )
     comment 'Phiếu trả hàng cho nhà cung cấp';
 
-create table if not exists return_product
+create table return_product
 (
-    id            bigint         primary key,
+    id            bigint         not null
+        primary key,
     return_log_id bigint         not null comment 'fk toi return_log',
     product_id    bigint         not null comment 'fk toi product id',
     quantity      int            not null comment 'so luong tra',
