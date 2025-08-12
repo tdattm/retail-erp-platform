@@ -1,4 +1,4 @@
-import mysql.connector
+import pymysql
 import random
 from faker import Faker
 from snowflake import SnowflakeGenerator, Snowflake
@@ -12,7 +12,7 @@ db_config = {
 }
 
 
-connect_mysql = mysql.connector.connect(**db_config)
+connect_mysql = pymysql.connect(**db_config)
 cursor = connect_mysql.cursor()
 
 fake = Faker('vi_VN')

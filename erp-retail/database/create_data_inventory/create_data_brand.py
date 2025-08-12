@@ -1,7 +1,7 @@
-import mysql.connector
+import pymysql
 import random
-from faker import Faker
-from snowflake import SnowflakeGenerator, Snowflake
+from faker import Faker #pip install Faker
+from snowflake import SnowflakeGenerator, Snowflake #pip install snowflake-connector-python, snowflake-id
 from datetime import datetime
 
 db_config = {
@@ -12,7 +12,7 @@ db_config = {
 }
 
 
-connect_mysql = mysql.connector.connect(**db_config)
+connect_mysql = pymysql.connect(**db_config)
 cursor = connect_mysql.cursor()
 
 fake = Faker('vi_VN')
