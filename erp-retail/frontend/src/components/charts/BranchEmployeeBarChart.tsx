@@ -64,6 +64,9 @@ const BranchEmployeeBarChart: React.FC = () => {
           label: (ctx) => `${ctx.parsed.x} nhân viên`,
         },
       },
+      datalabels: {
+        display: false,
+      }
     },
     scales: {
       x: {
