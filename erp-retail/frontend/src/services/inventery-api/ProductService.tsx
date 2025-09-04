@@ -1,6 +1,6 @@
 import axios from "axios";
 import { listBrands } from "../../services/inventery-api/BrandService";
-const REST_API_PRODUCT_URL = 'http://localhost:8080/optima/api/product';
+const REST_API_PRODUCT_URL = 'http://localhost:8083/api/product';
 
 export const listProducts = () => {
     return axios.get(REST_API_PRODUCT_URL);
