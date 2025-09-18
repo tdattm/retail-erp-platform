@@ -45,12 +45,25 @@ const CategoryStatic: React.FC<CategoryStaticData> = ({
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Tổng sản phẩm</CardTitle>
+            <CardTitle className="text-sm font-medium">Tổng sản phẩm đang hoạt động</CardTitle>
             <Tag className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
               {totalProduct}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+            <CardTitle className='text-sm font-medium'>
+            Tổng sản phẩm
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className='text-2xl font-bold'>
+              Đang phát triển
             </div>
           </CardContent>
         </Card>

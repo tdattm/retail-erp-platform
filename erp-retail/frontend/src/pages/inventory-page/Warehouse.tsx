@@ -1,17 +1,17 @@
 import React, {useState, useEffect} from 'react';
-import { ProductSearch } from '../components/inventory_components/products/ProductSearch';
-import { WarehouseChoose } from '../components/inventory_components/warehouses/WarehouseChoose';
-import { getCountProductInWarehouse, getCountProductsNearExpiry, getCountProductsNearOut, getProductBatch, getSumQuantityProductInWarehouse, getWarehouses } from '../services/inventery-api/WarehouseService';
-import { WarehouseTableComponent } from '../components/inventory_components/warehouses/WarehouseTable';
-import { getInventoryByNameWarehouse, getTotalPriceNormalByWarehouse, getSearchInventory} from '../services/inventery-api/WarehouseService';
-import WarehouseStatic from '../components/inventory_components/warehouses/WarehouseStatic';
-import type { Warehouse, Inventory, ProductBatch } from '../types/InventoryServiceType';
+import { ProductSearch } from '../../components/inventory_components/products/ProductSearch';
+import { WarehouseChoose } from '../../components/inventory_components/warehouses/WarehouseChoose';
+import { getCountProductInWarehouse, getCountProductsNearExpiry, getCountProductsNearOut, getProductBatch, getSumQuantityProductInWarehouse, getWarehouses } from '../../services/inventery-api/WarehouseService';
+import { WarehouseTableComponent } from '../../components/inventory_components/warehouses/WarehouseTable';
+import { getInventoryByNameWarehouse, getTotalPriceNormalByWarehouse, getSearchInventory} from '../../services/inventery-api/WarehouseService';
+import WarehouseStatic from '../../components/inventory_components/warehouses/WarehouseStatic';
+import type { Warehouse as WarehouseType, Inventory, ProductBatch } from '../../types/InventoryServiceType';
 import { HardDrive } from 'lucide-react';
-import { InventorySearch } from '../components/inventory_components/warehouses/WarehouseSearch';
+import { InventorySearch } from '../../components/inventory_components/warehouses/WarehouseSearch';
 
 const Warehouse: React.FC = () => {
   //data
-  const [dataWarehouse, setDataWarehouse] = useState<Warehouse[]>([]);
+  const [dataWarehouse, setDataWarehouse] = useState<WarehouseType[]>([]);
   const [openFindWarehouse, setOpenWarehouse] = useState(false);
   const [selectWarehouse, setSelectWarehouse] = useState<string | null>('');
   const [inventories, setInventories] = useState<Inventory[]>([]);
@@ -42,7 +42,7 @@ const Warehouse: React.FC = () => {
     const fetchWarehouses = async () => {
       try {
         const response = await getWarehouses();
-        const warehouseData: Warehouse[] = response.data;
+        const warehouseData: WarehouseType[] = response.data;
         setDataWarehouse(warehouseData);
         if (warehouseData.length > 0) {
           setSelectWarehouse(warehouseData[0].id);

@@ -6,9 +6,10 @@ import { Tooltip, TooltipTrigger} from '../../ui/tooltip';
 import { Eye, Trash, Pencil, Tag, Calendar } from 'lucide-react';
 import { DialogHeader, Dialog, DialogContent, DialogDescription, DialogTitle } from '../../ui/dialog';
 import { formatCurrency, formatDate } from '../Convert';
-import type { Product, ProductTable } from '../../../types/InventoryServiceType';
+import type { Product, TableProp } from '../../../types/InventoryServiceType';
 
-export const ProductTableComponent: React.FC<ProductTable> = ({
+type ProductTableProp = TableProp<Product>
+export const ProductTableComponent: React.FC<ProductTableProp> = ({
   data,
   loading,
   onEdit,
