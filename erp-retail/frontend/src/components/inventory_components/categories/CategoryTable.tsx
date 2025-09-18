@@ -57,6 +57,7 @@ export const CategoryTable: React.FC<CategoryTableProp> = ({
                   </TableHead>
                   <TableHead className='text-center !border-r !border-gray-300'>Tiêu đề</TableHead>
                   <TableHead className='text-center !border-r !border-gray-300'>Mô tả</TableHead>
+                  <TableHead className='text-center !border-r !border-gray-300'>Số sản phẩm</TableHead>
                   <TableHead className='text-center !border-r !border-gray-300'>Trạng thái</TableHead>
                   <TableHead className='text-center '>Chức năng</TableHead>
                 </TableRow>
@@ -78,7 +79,8 @@ export const CategoryTable: React.FC<CategoryTableProp> = ({
                         </div>
                       </TableCell>
                       <TableCell className='text-center !border-r !border-gray-300'>{cat.seoTitle} </TableCell>
-                      <TableCell className='text-center !border-r !border-gray-300'>{cat.description}</TableCell>
+                      <TableCell className='text-left !border-r !border-gray-300'>{cat.description}</TableCell>
+                      <TableCell className='text-left !border-r !border-gray-300'>Đang phát triển</TableCell>
                       <TableCell className='text-center !border-r !border-gray-300 '>
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                           cat.status === 'active' ? 'bg-green-100 text-green-700'
