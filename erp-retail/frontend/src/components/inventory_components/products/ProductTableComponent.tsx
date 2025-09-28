@@ -3,45 +3,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../..
 import { TableBody, TableCell, TableHead, TableRow, TableHeader, Table } from '../../ui/table';
 import { Button } from '../../ui/button';
 import { Tooltip, TooltipTrigger} from '../../ui/tooltip';
-import { Eye, Trash, Pencil, Tag, Calendar, Edit } from 'lucide-react';
+import { Eye, Trash, Pencil, Tag, Calendar } from 'lucide-react';
 import { DialogHeader, Dialog, DialogContent, DialogDescription, DialogTitle } from '../../ui/dialog';
 import { formatCurrency, formatDate } from '../Convert';
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  priceNormal: number;
-  status: string;
-  brandName: string;
-  categoryName: string;
-  manufacturingLocationName: string;
-  sku: string;
-  tag: string;
-  priceSell: number;
-  promotionPrice: number;
-  metaKeyword: string;
-  seoTitle: string;
-  updateBy: string;
-  updateAt: string;
-  createBy: string;
-  createAt: string;
-  brandId: string;
-  categoryId: string;
-  manufacturingLocationId: string;
-  weight: number;
-  vat: number;
-}
+import type { Product, TableProp } from '../../../types/InventoryServiceType';
 
-interface ProductTable {
-  data: Product[];
-  loading: boolean;
-  onEdit: (product: Product) => void;
-  onDelete: (id: string) => void;
-  totalElements: number
-}
-
-
-export const ProductTableComponent: React.FC<ProductTable> = ({
+type ProductTableProp = TableProp<Product>
+export const ProductTableComponent: React.FC<ProductTableProp> = ({
   data,
   loading,
   onEdit,
@@ -50,7 +18,6 @@ export const ProductTableComponent: React.FC<ProductTable> = ({
 }) => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [openInformationProduct, setOpenInformationProduct] = useState<boolean>(false);
-
   const handleViewProduct = (product: Product) => {
     setSelectedProduct(product);
     setOpenInformationProduct(true);
@@ -73,9 +40,10 @@ export const ProductTableComponent: React.FC<ProductTable> = ({
             Cuộn để xem thêm • Click tiêu đề để sắp xếp
           </div>
         </div>
+
       </CardHeader>
       <CardContent>
-        <div className="rounded-md border relative overflow-hidden">
+        <div className="rounded-md border relative">
           <div className='w-full h-[400px] overflow-auto scroll-smooth'
             style = {{
               scrollbarWidth: 'thin',
@@ -86,14 +54,14 @@ export const ProductTableComponent: React.FC<ProductTable> = ({
               <TableHeader className=" sticky top-0 z-50 !border-b border-gray-900 bg-gray-100 dark:bg-gray-900">
                 <TableRow className='hover:bg-transparent'>
                   <TableHead className='text-center !border-r !border-gray-300'>
-                    Name
+                    Tên sản phẩm
                   </TableHead>
-                  <TableHead className='text-center !border-r !border-gray-300'>SKU</TableHead>
-                  <TableHead className='text-center !border-r !border-gray-300'>PriceNormal</TableHead>
-                  <TableHead className='text-center !border-r !border-gray-300'>Brand</TableHead>
-                  <TableHead className='text-center !border-r !border-gray-300'>Category</TableHead>
-                  <TableHead className='text-center !border-r !border-gray-300'>Status</TableHead>
-                  <TableHead className='text-center '>Actions</TableHead>
+                  <TableHead className='text-center !border-r !border-gray-300'>Mã SKU</TableHead>
+                  <TableHead className='text-center !border-r !border-gray-300'>Giá gốc</TableHead>
+                  <TableHead className='text-center !border-r !border-gray-300'>Thương hiệu</TableHead>
+                  <TableHead className='text-center !border-r !border-gray-300'>Danh mục</TableHead>
+                  <TableHead className='text-center !border-r !border-gray-300'>Trạng thái</TableHead>
+                  <TableHead className='text-center '>Chức năng</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -105,7 +73,7 @@ export const ProductTableComponent: React.FC<ProductTable> = ({
                   </TableRow>
                 ): data.length>0 ? (
                   data.map((product) => (
-                    <TableRow key = {product.id}>
+                    <TableRow key = {product.id} className="!border-b">
                       <TableCell className='!border-r !border-gray-300'>
                         <div>
                           <div className='font-medium'>{product.name}</div>
