@@ -1,8 +1,12 @@
+server:
+  port: 8081
+
 spring:
   application:
     name: hrm-service
   datasource:
-    url: jdbc:mysql://hrm-db:3306/hrm_db
+#    url: jdbc:mysql://hrm-db:3306/hrm_db
+    url: jdbc:mysql://localhost:3309/hrm_db
     username: root
     password: 12122005
   jpa:
@@ -11,3 +15,12 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
+
+security:
+  jwt:
+    secret: ${JWT_SECRET:your_new_and_very_long_and_very_secure_secret_key_that_is_at_least_32_characters_long}
+    issuer: "erp-auth"
+
+app:
+  cors:
+    allowed-origins: "http://localhost:5173"
