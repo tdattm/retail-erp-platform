@@ -27,7 +27,7 @@ public class PromotionController {
         apiResponse.setData(promotionService.createPromotion(promotionRequest));
         return apiResponse;
     }
-    @PutMapping("/{promotionId}")
+    @PatchMapping("/{promotionId}")
     public ApiResponse<PromotionResponse> updatePromotion(@PathVariable("promotionId") Long promotionId,@RequestBody PromotionRequest promotionRequest) {
         ApiResponse<PromotionResponse> apiResponse = new ApiResponse<>();
         apiResponse.setData(promotionService.updatePromotion(promotionId, promotionRequest));

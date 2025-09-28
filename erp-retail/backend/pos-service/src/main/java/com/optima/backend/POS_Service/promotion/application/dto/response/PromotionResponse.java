@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PromotionResponse {
-    Long Id;
+    String Id;
     String codePromotion;
     String namePromotion;
     String descriptionPromotion;

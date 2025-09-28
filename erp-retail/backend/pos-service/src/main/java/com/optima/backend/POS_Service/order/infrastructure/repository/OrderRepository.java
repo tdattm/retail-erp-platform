@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -13,4 +15,6 @@ public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
     Optional<OrderEntity> findByCustomerIdAndOrderStatus_codeStatus(Long customerId, String status);
     Optional<OrderEntity> findByIdAndOrderStatus_codeStatus(Long orderId, String status);
     boolean existsByCustomerIdAndPromotion_codePromotion(Long customerId, String promotion);
+    List<OrderEntity> findOrderByCreatedAtBetween(LocalDateTime startDate, LocalDateTime endDate);
+    List<OrderEntity> readOrderEntitiesById(Long id);
 }

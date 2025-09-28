@@ -11,9 +11,14 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.aspectj.weaver.ast.Or;
+import org.hibernate.query.Order;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @RestController
@@ -24,15 +29,21 @@ import java.util.List;
 public class OrderController {
     OrderService orderService;
     @GetMapping("/{orderId}")
-    public ApiResponse<OrderResponse> getPromotion(@PathVariable("orderId") Long orderId) {
+    public ApiResponse<OrderResponse> getOrderById(@PathVariable("orderId") Long orderId) {
         ApiResponse<OrderResponse> apiResponse = new ApiResponse<OrderResponse>();
         apiResponse.setData(orderService.getOrderById(orderId));
         return apiResponse;
     }
-    public ApiResponse<List<OrderResponse>> getPromotions() {
+    @GetMapping
+    public ApiResponse<List<OrderResponse>> getOrders() {
         ApiResponse<List<OrderResponse>> apiResponse = new ApiResponse<>();
         apiResponse.setData(orderService.getOrders());
         return apiResponse;
+    }
+    @DeleteMapping("/{orderId}")
+    public ApiResponse<Void> deleteOrder(@PathVariable("orderId") Long orderId) {
+        orderService.deleteOrder(orderId);
+        return new ApiResponse<>( "Mã khuyến mãi đã bị xóa");
     }
     @PostMapping("/add-to-cart")
     public ApiResponse<OrderResponse> addToCart(@RequestBody  @Valid OrderRequest request) {
@@ -81,6 +92,15 @@ public class OrderController {
     public ApiResponse<List<PromotionResponse>> getUsedPromotion(@PathVariable("orderId") Long orderId) {
         ApiResponse<List<PromotionResponse>> apiResponse = new ApiResponse<>();
         apiResponse.setData(orderService.getPromotionsUsedByOrder(orderId));
+        return apiResponse;
+    }
+    @GetMapping("/range")
+    public ApiResponse<List<OrderResponse>> getOrderInRange(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
+                                                            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end) {
+        ApiResponse<List<OrderResponse>> apiResponse = new ApiResponse<>();
+        LocalDateTime startOfDay = start.atStartOfDay();
+        LocalDateTime endOfDay = end.atTime(LocalTime.MAX);
+        apiResponse.setData(orderService.getOrdersByCreatedAtBetween(startOfDay, endOfDay));
         return apiResponse;
     }
 }

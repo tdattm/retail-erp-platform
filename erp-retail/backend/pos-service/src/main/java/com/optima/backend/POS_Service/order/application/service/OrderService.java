@@ -26,9 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -285,6 +283,10 @@ public class OrderService {
         return orderEntities.stream().map(orderEntity -> orderMapper.toResponse(orderEntity)).collect(Collectors.toList());
     }
     @Transactional
+    public void deleteOrder(Long orderId) {
+        orderRepository.deleteById(orderId);
+    }
+    @Transactional
     public List<PromotionResponse> getPromotionsUsedByOrder(Long orderId) {
         List<PromotionEntity> promotionEntities = promotionRepository.findByIsActiveTrue();
         List<PromotionEntity> promotionUsed = new ArrayList<>();
@@ -294,6 +296,21 @@ public class OrderService {
                 promotionUsed.add(promotionEntity);
             }
         }
+//        List<String> codePromotions = promotionUsed.stream().map(PromotionEntity::getCodePromotion).collect(Collectors.toList());
+//        List<BigDecimal> discounts = promotionService.listApplyPromotionForOrder(codePromotions,orderEntity.getFinalAmountAfterTax());
+//        Map<String, BigDecimal> discountMap = new HashMap<>();
+//        for (int i = 0; i < codePromotions.size(); i++) {
+//            discountMap.put(codePromotions.get(i), discounts.get(i));
+//        }
+//        promotionUsed.sort(Comparator.comparing(
+//                (PromotionEntity p) -> discountMap.get(p.getCodePromotion()),
+//                Comparator.reverseOrder()
+//        ));
         return promotionUsed.stream().map(promotionMapper::toResponse).collect(Collectors.toList());
+    }
+    @Transactional
+    public List<OrderResponse> getOrdersByCreatedAtBetween(LocalDateTime startDate, LocalDateTime endDate) {
+        List<OrderEntity> orderEntities = orderRepository.findOrderByCreatedAtBetween(startDate, endDate);
+        return orderEntities.stream().map(orderEntity -> orderMapper.toResponse(orderEntity)).collect(Collectors.toList());
     }
 }

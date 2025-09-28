@@ -33,7 +33,7 @@ public  class OrderDetailMapper {
    }
    public OrderDetailResponse toResponse(OrderDetailEntity orderDetailEntity) {
        OrderDetailResponse orderDetailResponse = new OrderDetailResponse();
-       orderDetailResponse.setId(orderDetailEntity.getId());
+       orderDetailResponse.setId(String.valueOf(orderDetailEntity.getId()));
        orderDetailResponse.setPrice(orderDetailEntity.getPrice());
        orderDetailResponse.setQuantity(orderDetailEntity.getQuantity());
        orderDetailResponse.setProductName(orderDetailEntity.getProductName());
@@ -41,7 +41,7 @@ public  class OrderDetailMapper {
        return orderDetailResponse;
    }
     public List<OrderDetailEntity> toEntityList(List<OrderDetailRequest> requests,List<ProductResponse> productResponses, OrderEntity orderEntity) {
-        Map<Long, ProductResponse> productMap = productResponses.stream()
+        Map<String, ProductResponse> productMap = productResponses.stream()
                 .collect(Collectors.toMap(
                         ProductResponse::getId,
                         p -> p
