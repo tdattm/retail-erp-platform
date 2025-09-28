@@ -1,4 +1,4 @@
-package com.optima.hrm_erp.config;
+package com.optima.inventory.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -75,3 +75,4 @@ public class SecurityConfig {
         return converter;
     }
 }
+
