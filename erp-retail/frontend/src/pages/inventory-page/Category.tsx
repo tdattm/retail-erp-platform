@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import { DialogContent, DialogDescription, DialogTitle, DialogTrigger, Dialog, DialogHeader } from '../components/ui/dialog';
-import { Button } from '../components/ui/button';
+import { DialogContent, DialogDescription, DialogTitle, DialogTrigger, Dialog, DialogHeader } from '../../components/ui/dialog';
+import { Button } from '../../components/ui/button';
 import { Plus, } from 'lucide-react';
-import { createCategory, updateCategory, deleteCategory, getCountCategoryActive, getSearchCategory } from '../services/inventery-api/CategoryService';
-import type { Category, CategoryFormData, CategoryFormProps, CategoryTableProp} from '../types/InventoryServiceType';
-import {CategoryTable } from '../components/inventory_components/categories/CategoryTable';
-import CategoryForm from '../components/inventory_components/categories/CategoryForm'
-import CategoryStatic from '../components/inventory_components/categories/CategoryStatic';
-import { getCountProductActive } from '../services/inventery-api/ProductService';
+import { createCategory, updateCategory, deleteCategory, getCountCategoryActive, getSearchCategory } from '../../services/inventery-api/CategoryService';
+import type { Category, CategoryFormData, CategoryFormProps, CategoryTableProp} from '../../types/InventoryServiceType';
+import {CategoryTable } from '../../components/inventory_components/categories/CategoryTable';
+import CategoryForm from '../../components/inventory_components/categories/CategoryForm'
+import CategoryStatic from '../../components/inventory_components/categories/CategoryStatic';
+import { getCountProductActive } from '../../services/inventery-api/ProductService';
 
 export function Category() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -104,7 +104,7 @@ export function Category() {
           <div >
             <h3 className='mb-2'>Quản lý danh mục</h3>
             <p className="text-muted-foreground">
-              Quản lý dnah mục sản phẩm và phân loại hàng hóa
+              Quản lý danh mục sản phẩm và phân loại hàng hóa
             </p>
           </div>
 

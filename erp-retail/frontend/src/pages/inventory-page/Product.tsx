@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import ProductForm from '../components/inventory_components/products/ProductForm';
+import ProductForm from '../../components/inventory_components/products/ProductForm';
 
 import {
   createProduct,
@@ -11,23 +11,23 @@ import {
   getCategoryName,
   getBrandName,
   getSearchProducts,
-} from '../services/inventery-api/ProductService';
-import { DialogContent, DialogDescription, DialogTitle, DialogTrigger, Dialog, DialogHeader } from '../components/ui/dialog';
-import { Button } from '../components/ui/button';
+} from '../../services/inventery-api/ProductService';
+import { DialogContent, DialogDescription, DialogTitle, DialogTrigger, Dialog, DialogHeader } from '../../components/ui/dialog';
+import { Button } from '../../components/ui/button';
 import { Plus, Search, Package, AlertTriangle, TrendingUp, DollarSign, University } from 'lucide-react';
-import ProductStatic from '../components/inventory_components/products/ProductStatic';
-import { ProductSearch } from '../components/inventory_components/products/ProductSearch';
-import { ProductTableComponent } from '../components/inventory_components/products/ProductTableComponent';
-import type { Product, ProductFormData, CategoryName, ManufacturingLocationName, BrandName } from '../types/InventoryServiceType';
+import ProductStatic from '../../components/inventory_components/products/ProductStatic';
+import { ProductSearch } from '../../components/inventory_components/products/ProductSearch';
+import { ProductTableComponent } from '../../components/inventory_components/products/ProductTableComponent';
+import type { Product as ProductType, ProductFormData, CategoryName, ManufacturingLocationName, BrandName } from '../../types/InventoryServiceType';
 
 const Product: React.FC = () => {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ProductType[]>([]);
   const [page, setPage] = useState<number>(0);
   const [size, setSize] = useState<number>(20);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [formOpen, setFormOpen] = useState<boolean>(false);
-  const [currentProduct, setCurrentProduct] = useState<Product | null>(null);
+  const [currentProduct, setCurrentProduct] = useState<ProductType | null>(null);
   const [totalElements, setTotalElements] = useState<number>(0);
   const [countProductActive, setCountProductActive] = useState<number>(0);
   const [countBrandActive, setCountBrandActive] = useState<number>(0);
@@ -86,7 +86,7 @@ const Product: React.FC = () => {
     }
   };
   
-  const handleUpdate = (product: Product) => {
+  const handleUpdate = (product: ProductType) => {
     setCurrentProduct(product);
     setFormOpen(true);
   };
