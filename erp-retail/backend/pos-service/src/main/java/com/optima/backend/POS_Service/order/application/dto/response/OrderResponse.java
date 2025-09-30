@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderResponse {
-    Long Id;
+    String Id;
     List<OrderDetailResponse> orderDetails = new ArrayList<>();
     BigDecimal taxAmount;
     BigDecimal promotionDiscount;

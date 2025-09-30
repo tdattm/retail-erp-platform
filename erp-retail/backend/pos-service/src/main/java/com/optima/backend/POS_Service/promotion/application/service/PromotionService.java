@@ -117,5 +117,11 @@ public class PromotionService {
         }
         promotionRepository.save(promotion);
     }
-
+    public List<BigDecimal> listApplyPromotionForOrder(List<String> codePromotion, BigDecimal orderAmount){
+        List<BigDecimal> result = new ArrayList<>();
+        for (String code : codePromotion) {
+            result.add(applyPromotion(code, orderAmount));
+        }
+        return result;
+    }
 }

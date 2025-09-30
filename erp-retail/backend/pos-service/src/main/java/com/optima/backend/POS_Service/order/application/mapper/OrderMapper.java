@@ -44,7 +44,7 @@ public class OrderMapper {
    }
    public OrderResponse toResponse(OrderEntity orderEntity) {
        OrderResponse orderResponse = new OrderResponse();
-       orderResponse.setId(orderEntity.getId());
+       orderResponse.setId(String.valueOf(orderEntity.getId()));
        orderResponse.setOrderDetails(orderDetailMapper.toResponseList(orderEntity.getOrderDetails()));
        orderResponse.setTaxAmount(orderEntity.getTaxAmount());
        orderResponse.setPromotionDiscount(orderEntity.getPromotionDiscount());
