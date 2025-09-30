@@ -1,4 +1,5 @@
 import  React, {useState} from 'react';
+import { login } from "../services/auth/authApi";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Label } from '../components/ui/label';
@@ -11,9 +12,9 @@ interface LoginFormProps {
   onLogin: (useData: {username: string, role: string}) => void;
 }
 
-const mockUsers = {
-    'admin': { password: 'admin123', role: 'Quản trị viên', fullName: 'Vu Tien Dat' },
-  };
+// const mockUsers = {
+//     'admin': { password: 'admin123', role: 'Quản trị viên', fullName: 'Vu Tien Dat' },
+//   };
 
 export function LoginForm({onLogin}: LoginFormProps) {
   const [username, setUsername] = useState('');
@@ -28,23 +29,46 @@ export function LoginForm({onLogin}: LoginFormProps) {
     setIsLoading(true);
     setError('');
 
-    const user = mockUsers[username as keyof typeof mockUsers];
+    // const user = mockUsers[username as keyof typeof mockUsers];
 
-    if (user && user.password === password) {
-      console.log("Đăng nhập thành công");
-      toast.success("Đăng nhập thành công");
+    // if (user && user.password === password) {
+    //   console.log("Đăng nhập thành công");
+    //   toast.success("Đăng nhập thành công");
 
+    //   onLogin({
+    //   username: user.fullName,
+    //   role: user.role
+    //   });
+    // } else {
+    //   console.log("Đăng nhập thất bại")
+    //   setError('Tên đăng nhập hoặc mật khẩu bị sai');
+    //   toast.error('Đăng nhập thất bại');
+    // }
+
+    // setIsLoading(false);
+    try {
+      const res = await login(username, password);
+
+      const { accessToken, refreshToken, fullName, role } = res.data;
+
+      // Lưu token vào localStorage
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+
+      toast.success('Đăng nhập thành công');
+
+      // Cập nhật UI
       onLogin({
-      username: user.fullName,
-      role: user.role
+        username: fullName || username,
+        role: role || 'Người dùng',
       });
-    } else {
-      console.log("Đăng nhập thất bại")
-      setError('Tên đăng nhập hoặc mật khẩu bị sai');
+    } catch (err: any) {
+      console.error(err);
+      setError('Tên đăng nhập hoặc mật khẩu sai');
       toast.error('Đăng nhập thất bại');
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   }
 
   return (
@@ -113,6 +137,8 @@ export function LoginForm({onLogin}: LoginFormProps) {
                 </div>
               </div>
 
+              {error && <p className="text-red-500 text-sm">{error}</p>}  
+
               <Button
                 type="submit"
                 className="w-full"
@@ -136,7 +162,7 @@ export function LoginForm({onLogin}: LoginFormProps) {
             <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg">
               <p className="text-xs text-blue-700 dark:text-blue-300">
                 <strong>Thông tin đăng nhập:</strong><br />
-                • admin/admin123 (Quản trị viên)<br />
+                • tiendat/P@ssw0rd! (Quản trị viên)<br />
               </p>
             </div>
           </CardContent>
